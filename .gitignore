@@ -1,8 +1,47 @@
-.venv/
+# Local workflow
+inventory_*.md
+inventory_summary*.json
+agents.md
+git.md
+SESSION_NOTES.md
+.env
+tools/refresh_inventory.py
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/
+
+# Python cache
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+.venv-*/
+venv/
+env/
+.env/
+.env.*
+!.env.example
+
+# Tooling
+.python-version
+.tool-versions
+
+# Build / tooling
 .pytest_cache/
+.cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
+.coverage
+coverage.xml
+htmlcov/
+.hypothesis/
 dist/
 build/
-*.pyc
+*.egg-info/
