@@ -30,6 +30,9 @@ decision = f(inputs)
 
 The result is replayable, comparable, and structurally describable.
 
+`execution-without-normativity` shows that execution can exist without governance.
+`dbl-policy-gates` shows how governance can be made composable, replayable, and structurally comparable.
+
 ## Position in the Stack
 
 ```text
@@ -47,6 +50,9 @@ domain policies
 
 `dbl-policy` defines the contract for policy decisions.
 `dbl-policy-gates` defines the algebra used to assemble them.
+
+Execution happens first.
+Policies are assembled here.
 
 ## Model
 
