@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbl-policy-gates"
+version = "0.1.0"
+description = "Deterministic gate algebra for dbl-policy"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [
+  { name = "Lukas Pfister", email = "228201683+lukaspfisterch@users.noreply.github.com" }
+]
+keywords = ["dbl", "policy", "gates", "governance", "deterministic"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
+dependencies = [
+  "dbl-policy>=0.3.0,<0.4.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8,<9",
+]
+dev = [
+  "pytest>=8,<9",
+  "ruff>=0.5,<1",
+  "mypy>=1.10,<2",
+]
+
+[project.urls]
+Repository = "https://github.com/lukaspfisterch/dbl-policy-gates"
+Issues = "https://github.com/lukaspfisterch/dbl-policy-gates/issues"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["dbl_policy_gates*"]
+exclude = ["tests*", "docs*", "scripts*"]
+
+[tool.setuptools.package-data]
+dbl_policy_gates = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = ["-q", "--strict-markers", "--strict-config"]
