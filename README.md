@@ -1,5 +1,10 @@
 # dbl-policy-gates
 
+[![Tests](https://github.com/lukaspfisterch/dbl-policy-gates/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/lukaspfisterch/dbl-policy-gates/actions/workflows/tests.yml)
+[![PyPI](https://img.shields.io/pypi/v/dbl-policy-gates.svg)](https://pypi.org/project/dbl-policy-gates/)
+[![Python >=3.11](https://img.shields.io/pypi/pyversions/dbl-policy-gates.svg?label=Python)](https://pypi.org/project/dbl-policy-gates/)
+[![Typing: Typed](https://img.shields.io/badge/typing-typed-2d7f5e.svg)](https://pypi.org/project/dbl-policy-gates/)
+
 Deterministic gate algebra for `dbl-policy`.
 
 This package provides the primitive gate operations used to build governance
