@@ -131,8 +131,7 @@ Every gate implements `describe()`.
 Use `describe_digest(gate)` to get a stable SHA-256 digest of the canonical gate
 description. This is intended for drift detection and replay tooling.
 
-This matters because governance can then be compared as structure, not just as
-runtime behavior.
+This makes governance comparable as structure, not just as runtime behavior.
 
 ## Structured Reason Detail
 
