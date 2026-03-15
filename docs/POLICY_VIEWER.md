@@ -152,6 +152,95 @@ Example path conventions:
 This gives the viewer a stable local identity without introducing new semantic
 IDs into the gate model.
 
+## Concrete MVP payload
+
+For the first iteration, prefer a tree payload over a general graph payload.
+
+Reason:
+
+- the algebra is structurally a tree
+- tree rendering is simpler
+- the semantics stay closer to the source model
+
+Suggested payload shape:
+
+```python
+{
+  "digest": "sha256:...",
+  "tree": {
+    "path": "root",
+    "kind": "root_policy",
+    "label": None,
+    "meta": {
+      "policy_id": "chat.guardrails",
+      "policy_version": "1.0.0",
+    },
+    "children": [
+      {
+        "path": "root.root",
+        "kind": "chain",
+        "label": None,
+        "meta": {},
+        "children": [
+          {
+            "path": "root.root.gates[0]",
+            "kind": "match",
+            "label": "chat_capability",
+            "meta": {
+              "key": "capability",
+              "value": "chat",
+            },
+            "children": [],
+          },
+          {
+            "path": "root.root.gates[1]",
+            "kind": "bound",
+            "label": "output_token_limit",
+            "meta": {
+              "key": "max_output_tokens",
+              "lo": 1,
+              "hi": 4096,
+            },
+            "children": [],
+          },
+        ],
+      },
+    ],
+  },
+}
+```
+
+Rules:
+
+- `path` is structural and deterministic
+- `kind` comes from `describe()["type"]`
+- `label` comes from `describe()["label"]` when present
+- `meta` contains all remaining non-structural fields
+- `children` is ordered and preserves the canonical gate order
+
+This payload is sufficient for:
+
+- recursive tree rendering
+- inspector side panel
+- digest display
+- per-node hover details
+
+## Projection rules from `describe()`
+
+The viewer adapter should use only structural projection rules.
+
+Recommended mapping:
+
+- `root_policy.root` -> single child
+- `chain.gates` -> ordered children
+- `any_of.gates` -> ordered children
+- `invert.inner` -> single child
+- all other gate types -> leaf nodes
+
+Everything else stays in node metadata.
+
+That keeps the adapter stable even if more atomic gates are added later.
+
 ## Evaluation overlay
 
 The first viewer should be structural.
@@ -167,6 +256,30 @@ This overlay must remain separate from the structure itself.
 
 The structure is canonical.
 The overlay is a run-specific projection.
+
+Suggested overlay shape:
+
+```python
+{
+  "result": "DENY",
+  "reason_code": "gate.bound.above:max_output_tokens",
+  "active_path": [
+    "root",
+    "root.root",
+    "root.root.gates[1]",
+  ],
+  "decisive_node": "root.root.gates[1]",
+  "node_states": {
+    "root": "visited",
+    "root.root": "visited",
+    "root.root.gates[0]": "allow",
+    "root.root.gates[1]": "deny",
+  },
+}
+```
+
+This overlay can be derived from evaluation tracing later.
+It should not change the canonical structural payload.
 
 ## MVP
 
