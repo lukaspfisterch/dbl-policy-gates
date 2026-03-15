@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2] - 2026-03-15
+
+- Add `tree_payload()` as a pure projection from `describe()` into a
+  viewer-friendly policy tree
+- Add tests for deterministic tree projection
+- Document the policy viewer architecture and payload contract
+- Expand the README with the viewer payload entry point
+
 ## [0.1.1] - 2026-03-15
 
 - Clean up packaging metadata for modern setuptools

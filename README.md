@@ -80,7 +80,7 @@ Requires Python 3.11+ and `dbl-policy>=0.3,<0.4`.
 
 ```python
 from dbl_policy.model import PolicyId, PolicyVersion, PolicyContext, TenantId
-from dbl_policy_gates import Bound, Match, RootPolicy, chain
+from dbl_policy_gates import Bound, Match, RootPolicy, chain, tree_payload
 
 root = RootPolicy(
     policy_id=PolicyId("chat.guardrails"),
@@ -97,7 +97,11 @@ ctx = PolicyContext(
 )
 
 decision = root.evaluate(ctx)
+viewer = tree_payload(root)
 ```
+
+`viewer` is a deterministic tree payload derived from `describe()`. It is
+intended for policy viewers and inspector UIs, not for evaluation.
 
 ## Included Gates
 
@@ -132,6 +136,21 @@ Use `describe_digest(gate)` to get a stable SHA-256 digest of the canonical gate
 description. This is intended for drift detection and replay tooling.
 
 This makes governance comparable as structure, not just as runtime behavior.
+
+## Viewer Payload
+
+Use `tree_payload(root_policy)` to project a policy tree into a viewer-friendly
+payload with:
+
+- `digest`
+- structural `path`
+- gate `kind`
+- optional `label`
+- gate `meta`
+- ordered `children`
+
+See [docs/POLICY_VIEWER.md](docs/POLICY_VIEWER.md) for the architecture and
+payload contract.
 
 ## Structured Reason Detail
 
