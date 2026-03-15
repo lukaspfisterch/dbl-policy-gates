@@ -11,14 +11,38 @@ This package provides the primitive gate operations used to build governance
 functions. It does not execute tasks, emit events, or observe runtime
 artifacts.
 
+## Why this exists
+
+If `dbl-policy` defines the contract for a decision, `dbl-policy-gates`
+defines the algebra used to build one.
+
+That is the whole split:
+
+- `dbl-policy` answers: what is a policy decision?
+- `dbl-policy-gates` answers: how is governance logic assembled?
+
+This package models governance as a deterministic function over authoritative
+inputs:
+
+```text
+decision = f(inputs)
+```
+
+The result is replayable, comparable, and structurally describable.
+
 ## Position in the Stack
 
 ```text
-execution-without-normativity
+execution mechanics
     -> dbl-core
+
+policy contract
     -> dbl-policy
+
+policy algebra
     -> dbl-policy-gates
-    -> domain policies
+
+domain policies
 ```
 
 `dbl-policy` defines the contract for policy decisions.
@@ -34,6 +58,9 @@ There are two layers in this package:
 
 This split is intentional. Gates remain anonymous structure; only the root
 policy carries `policy_id` and `policy_version`.
+
+This is not a rule engine.
+It is a deterministic decision structure composed from small primitives.
 
 ## Install
 
@@ -82,12 +109,24 @@ decision = root.evaluate(ctx)
 `Chain` and `AnyOf` require at least one child gate. Empty combinators are
 rejected at construction time.
 
+Example building blocks:
+
+- `Match("capability", "chat")`
+- `Bound("max_output_tokens", 1, 4096)`
+- `Tenant({"tenant-1", "tenant-2"})`
+
+These can be combined into larger governance functions with `chain(...)`,
+`any_of(...)`, and `invert(...)`.
+
 ## Describe and Drift
 
 Every gate implements `describe()`.
 
 Use `describe_digest(gate)` to get a stable SHA-256 digest of the canonical gate
 description. This is intended for drift detection and replay tooling.
+
+This matters because governance can then be compared as structure, not just as
+runtime behavior.
 
 ## Structured Reason Detail
 
